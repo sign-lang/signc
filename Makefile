@@ -4,9 +4,6 @@ include Make.rules
 
 SRC := $(shell find src -name *.sign)
 
-C_SRC := $(shell find src-c -name *.c)
-C_DEP := $(shell find src-c -name *.h) $(C_SRC)
-
 
 STAGE1_LEX := $(BUILD_DIR)/stage1.lex
 STAGE2_LEX := $(BUILD_DIR)/stage2.lex
@@ -21,7 +18,6 @@ STAGE2_GEN := $(BUILD_DIR)/stage2.c
 STAGE3_GEN := $(BUILD_DIR)/stage3.c
 
 
-BOOTSTRAP := $(BUILD_DIR)/bootstrap
 STAGE_1 := $(BUILD_DIR)/stage1
 STAGE_2 := $(BUILD_DIR)/stage2
 STAGE_3 := $(BUILD_DIR)/stage3
@@ -52,10 +48,6 @@ clean::
 signc: .$(SIGNC)
 	@
 
-.PHONY: bootstrap
-bootstrap: $(BOOTSTRAP)
-	@
-
 .PHONY: stage1
 stage1: $(STAGE_1)
 	@
@@ -69,18 +61,14 @@ stage3: $(STAGE_3)
 	@
 
 
-$(BOOTSTRAP): $(C_DEP) | $(BUILD_DIR)
-	@$(CC) $(CCFLAGS) -o $@ $(C_SRC)
+$(STAGE1_LEX): $(SRC) | $(BUILD_DIR)
+	@$(SIGNC) -l $(SRC) > $@
 
+$(STAGE1_PARSE): $(SRC) | $(BUILD_DIR)
+	@$(SIGNC) -p $(SRC) > $@
 
-$(STAGE1_LEX): $(BOOTSTRAP) $(SRC)
-	@$< -l $(SRC) > $@
-
-$(STAGE1_PARSE): $(BOOTSTRAP) $(SRC)
-	@$< -p $(SRC) > $@
-
-$(STAGE1_GEN): $(BOOTSTRAP) $(SRC)
-	@$< -g $(SRC) > $@
+$(STAGE1_GEN): $(SRC) | $(BUILD_DIR)
+	@$(SIGNC) -g $(SRC) > $@
 
 $(STAGE_1): $(STAGE1_LEX) $(STAGE1_PARSE) $(STAGE1_GEN)
 	@$(CC) $(CCFLAGS) -o $@ $(STAGE1_GEN)

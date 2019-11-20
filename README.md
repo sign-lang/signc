@@ -17,7 +17,6 @@ make clean
 ###### Intermediate Stages
 
 ```
-make bootstrap
 make stage1
 make stage2
 make stage3
