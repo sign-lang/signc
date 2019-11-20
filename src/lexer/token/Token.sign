@@ -1,0 +1,9 @@
+typedef struct {
+	int kind;
+	char* value;
+	size_t length;
+} Token;
+
+Token* newToken(void) {
+	return xcalloc(1, sizeof(Token));
+}

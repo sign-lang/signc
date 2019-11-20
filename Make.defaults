@@ -1,0 +1,44 @@
+# Clear builtin rules
+.SUFFIXES:
+
+# Goal defaults
+.DEFAULT_GOAL := all
+
+# Directories
+SIGN_INSTALL_PATH ?= bin/$(SIGN_HOST)
+BIN_DIR := $(SIGN_INSTALL_PATH)
+BUILD_DIR := .build/$(SIGN_HOST)
+
+# Flags
+CCFLAGS := \
+	-std=c11 \
+	-Wall -Werror -Wextra \
+	-Waggregate-return \
+	-Wcast-align \
+	-Wcast-qual \
+	-Wconversion \
+	-Wfloat-equal \
+	-Wformat=2 \
+	-Wformat-security \
+	-Winit-self \
+	-Wmissing-braces \
+	-Wmissing-declarations \
+	-Wmissing-field-initializers \
+	-Wmissing-prototypes \
+	-Wpointer-arith \
+	-Wshadow \
+	-Wstrict-overflow=5 \
+	-Wstrict-prototypes \
+	-Wswitch-default \
+	-Wswitch-enum \
+	-Wundef \
+	-Wuninitialized \
+	-Wunreachable-code \
+	-Wwrite-strings \
+	-pedantic-errors
+
+ifeq ($(origin DEBUG),undefined)
+CCFLAGS += -O3
+else
+CCFLAGS += -O0 -g
+endif

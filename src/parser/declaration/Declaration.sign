@@ -1,0 +1,9 @@
+typedef struct {
+	int kind;
+	Token** start;
+	size_t count;
+} Declaration;
+
+Declaration* newDeclaration(void) {
+	return xcalloc(1, sizeof(Declaration));
+}

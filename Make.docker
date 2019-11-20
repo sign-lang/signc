@@ -1,0 +1,30 @@
+DOCKERFILES := $(filter-out ../Docker/base/Dockerfiles,$(shell find ../Docker/base/Dockerfiles 2>/dev/null))
+
+
+# $(1) The name of the dockerfile
+define DockerTemplate =
+.PHONY: all/$(1) install/$(1)
+
+all/docker: all/$(1)
+all/$(1):
+	docker run --volume `pwd`:/sign --workdir /sign -it signlang/base:$(1) make
+
+install/docker: install/$(1)
+install/$(1):
+	docker run --volume `pwd`:/sign --workdir /sign -it signlang/base:$(1) make install
+endef
+
+
+$(foreach _file, $(DOCKERFILES), \
+	$(eval $(call DockerTemplate,$(notdir $(_file)))))
+
+
+ifneq ($(strip $(DOCKERFILES)),)
+.PHONY: all/docker
+all/docker:
+	@
+
+.PHONY: install/docker
+install/docker:
+	@
+endif
