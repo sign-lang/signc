@@ -1,0 +1,37 @@
+LEX_TEST_FILES := $(shell find $(TESTS_DIR) -name '*.lex')
+PARSE_TEST_FILES := $(shell find $(TESTS_DIR) -name '*.parse')
+RESOLVE_TEST_FILES := $(shell find $(TESTS_DIR) -name '*.resolve')
+C_TEST_FILES := $(shell find $(TESTS_DIR) -name '*.c')
+
+LEX_TESTS := $(patsubst %.lex, %.lex.test, $(LEX_TEST_FILES))
+PARSE_TESTS := $(patsubst %.parse, %.parse.test, $(PARSE_TEST_FILES))
+RESOLVE_TESTS := $(patsubst %.resolve, %.resolve.test, $(RESOLVE_TEST_FILES))
+C_TESTS := $(patsubst %.c, %.c.test, $(C_TEST_FILES))
+
+ALL_TESTS := $(LEX_TESTS) $(PARSE_TESTS) $(RESOLVE_TESTS) $(C_TESTS)
+
+
+clean::
+	@$(RM) -rf $(TESTS_DIR)/**/*.gen
+
+
+.PHONY: test
+test: $(ALL_TESTS)
+	@echo "All tests passed."
+
+
+%.lex.test: %.sign %.lex $(STAGE_3)
+	@$(STAGE_3) -l $< > $(patsubst %.lex.test, %.lex.gen, $@) 2>&1 || (exit 0)
+	@diff -q $(word 2, $^) $(patsubst %.lex.test, %.lex.gen, $@) >/dev/null || (echo "Test $@ failed" && exit 1)
+
+%.parse.test: %.sign %.parse $(STAGE_3)
+	@$(STAGE_3) -p $< > $(patsubst %.parse.test, %.parse.gen, $@) 2>&1 || (exit 0)
+	@diff -q $(word 2, $^) $(patsubst %.parse.test, %.parse.gen, $@) >/dev/null || (echo "Test $@ failed" && exit 1)
+
+%.resolve.test: %.sign %.resolve $(STAGE_3)
+	@$(STAGE_3) -r $< > $(patsubst %.resolve.test, %.resolve.gen, $@) 2>&1 || (exit 0)
+	@diff -q $(word 2, $^) $(patsubst %.resolve.test, %.resolve.gen, $@) >/dev/null || (echo "Test $@ failed" && exit 1)
+
+%.c.test: %.sign %.c $(STAGE_3)
+	@$(STAGE_3) -g $< > $(patsubst %.c.test, %.c.gen, $@) 2>&1 || (exit 0)
+	@diff -q $(word 2, $^) $(patsubst %.c.test, %.c.gen, $@) >/dev/null || (echo "Test $@ failed" && exit 1)

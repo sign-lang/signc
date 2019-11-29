@@ -1,0 +1,5 @@
+typedef struct {
+	int kind;
+	char* value;
+	size_t length;
+} Token;

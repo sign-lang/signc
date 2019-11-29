@@ -107,4 +107,5 @@ $(STAGE_3): $(STAGE3_LEX) $(STAGE3_PARSE) $(STAGE3_GEN)
 	@cp $< $(SIGNC)
 
 
+include Make.test
 include Make.docker

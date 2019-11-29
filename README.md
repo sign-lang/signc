@@ -20,6 +20,7 @@ make clean
 make stage1
 make stage2
 make stage3
+make test
 make signc
 make clean-bin
 ```
@@ -34,6 +35,7 @@ If `Docker` is cloned in the same folder as `signc` the following make targets b
 
 ```
 make all/<version>
+make test/<version>
 make install/<version>
 ```
 
@@ -41,5 +43,6 @@ To make all docker versions:
 
 ```
 make all/docker
+make test/docker
 make install/docker
 ```

@@ -7,6 +7,7 @@
 # Directories
 SIGN_INSTALL_PATH ?= bin/$(SIGN_HOST)
 BIN_DIR := $(SIGN_INSTALL_PATH)
+TESTS_DIR := tests
 BUILD_DIR := .build/$(SIGN_HOST)
 
 # Flags
