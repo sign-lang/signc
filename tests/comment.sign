@@ -1,0 +1,24 @@
+// Sample struct
+typedef struct {
+	int kind; // int is from C
+	char* value; // char is from C
+	size_t length; // size_t is from C
+} Token;
+
+// Creates a new Token on the heap
+Token* newToken(void) {
+	return xcalloc(1, sizeof(Token));
+}
+
+// A calloc that exits on allocation error
+void* xcalloc(size_t count, size_t size) {
+	// calloc is from C
+	void* pointer = calloc(count, size);
+	if (pointer == NULL) {
+		// perror is from C
+		perror("xcalloc");
+		// exit and EXIT_FAILURE are from C
+		exit(EXIT_FAILURE);
+	}
+	return pointer;
+}

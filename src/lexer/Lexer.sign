@@ -13,6 +13,8 @@ Token** Lex(char* code, size_t codeLength, size_t* outTokenCount) {
 			while (isspace(*code)) { ++code; };
 		} else if (*code == 10) {
 			while (isspace(*code)) { ++code; };
+		} else if (*code == 47) {
+			while (!(*code == 10)) { ++ code; };
 		} else if (*code == 44) {
 			token = newToken();
 			token->kind = TokenKind_Comma;
