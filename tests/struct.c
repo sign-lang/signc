@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define STRINGIFY(s) XSTRINGIFY(s)
+#define XSTRINGIFY(s) #s
+
 typedef struct Token Token;
 
 struct Token {

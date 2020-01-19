@@ -7,6 +7,10 @@ void Codegen(Declaration** declarations, size_t count) {
 	printf("#include <string.h>\n");
 	printf("\n");
 	
+	printf("#define STRINGIFY(s) XSTRINGIFY(s)\n");
+	printf("#define XSTRINGIFY(s) #s\n");
+	printf("\n");
+	
 	for (size_t i = 0; i < count; ++i) {
 		Declaration* decl = declarations[i];
 		if (decl->kind == DeclarationKind_Struct) {
