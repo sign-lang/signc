@@ -3,6 +3,8 @@ include Make.rules
 
 
 SRC := $(shell find src -name *.sign)
+VERSION := $(shell git describe --broken --dirty)
+CCFLAGS += -DSIGNCVERSION=$(VERSION)
 
 
 STAGE1_LEX := $(BUILD_DIR)/stage1.lex

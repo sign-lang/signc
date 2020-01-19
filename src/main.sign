@@ -6,7 +6,7 @@ typedef struct {
 } Options;
 
 void printVersion(void) {
-	printf("signc version 0.0.4\n");
+	printf("signc version " STRINGIFY(SIGNCVERSION) "\n");
 	printf("Target: C\n");
 }
 
